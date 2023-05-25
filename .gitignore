@@ -23,8 +23,12 @@ dist-ssr
 *.sln
 *.sw?
 
+
 # Release
 *.tgz
 
-# cosmos
-/cosmos-export
+# tailwind output
+/src/index.css
+
+# storybook
+storybook-static/
