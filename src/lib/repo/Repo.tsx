@@ -14,6 +14,11 @@ type Repo = ReactGitHub.Repo;
 export interface GitHubRepoProps {
   username: string;
   name: string;
+  showLanguageDetails?: boolean;
+}
+export interface RepoLanguagesProps {
+  username: string;
+  name: string;
 }
 
 const iconStyle = {
@@ -22,7 +27,35 @@ const iconStyle = {
   flexShrink: 0,
 };
 
-export function GitHubRepo({ username, name }: GitHubRepoProps) {
+function RepoLanguages({ username, name }: RepoLanguagesProps) {
+  const langAPI = `https://api.github.com/repos/${username}/${name}/languages`;
+  const [languages, setLanguages] = useState<Record<string, number>>({});
+
+  useEffect(() => {
+    async function fetchLanguages() {
+      const resp = await fetch(langAPI);
+      const data: Record<string, number> = await resp.json();
+      setLanguages(data);
+    }
+    fetchLanguages().catch(() => {});
+  }, [langAPI]);
+
+  const langs = Object.entries(languages)
+    .sort(([, a], [, b]) => b - a)
+    .map(([lang]) => lang);
+
+  return (
+    <div className="flex flex-wrap gap-1">
+      {langs.map((lang) => (
+        <span className="px-1 text-xs bg-gray-500 rounded" key={lang}>
+          {lang}
+        </span>
+      ))}
+    </div>
+  );
+}
+
+export function GitHubRepo({ username, name, showLanguageDetails = true }: GitHubRepoProps) {
   const api = `https://api.github.com/repos/${username}/${name}`;
   const [repo, setRepo] = useState<Repo | null>(null);
   useEffect(() => {
@@ -33,10 +66,10 @@ export function GitHubRepo({ username, name }: GitHubRepoProps) {
     }
     fetchRepo().catch(() => {});
   }, [api]);
-
   if (!repo) {
     return <Skeleton />;
   }
+
   const items = [
     { Icon: InfoIcon, key: 'description', inner: repo.description },
     {
@@ -48,7 +81,15 @@ export function GitHubRepo({ username, name }: GitHubRepoProps) {
         </a>
       ) : null,
     },
-    { Icon: CodeIcon, key: 'languages', inner: repo.language },
+    {
+      Icon: CodeIcon,
+      key: 'languages',
+      inner: showLanguageDetails ? (
+        <RepoLanguages username={username} name={name} />
+      ) : (
+        repo.language
+      ),
+    },
     {
       Icon: BookmarkIcon,
       key: 'topics',
@@ -61,7 +102,7 @@ export function GitHubRepo({ username, name }: GitHubRepoProps) {
       <div className="flex items-center gap-2">
         <div className="w-8 h-8">
           <img
-            className="w-full h-full rounded-full object-cover"
+            className="object-cover w-full h-full rounded-full"
             src={repo.owner.avatar_url}
             alt={`@${username}'s GitHub user card`}
           />
@@ -76,35 +117,35 @@ export function GitHubRepo({ username, name }: GitHubRepoProps) {
 
       <div className="flex mt-2 ">
         <div className="flex flex-col gap-1 grow">
-          <div className="flex gap-1 justify-center items-center">
+          <div className="flex items-center justify-center gap-1">
             <span className="text-gray-300">
               <StarIcon style={iconStyle} />
             </span>
             <b>{repo.stargazers_count}</b>
           </div>
-          <div className="text-gray-300 text-xs flex items-center justify-center">Stars</div>
+          <div className="flex items-center justify-center text-xs text-gray-300">Stars</div>
         </div>
         <div className="flex flex-col gap-1 grow">
-          <div className="flex gap-1 justify-center items-center">
+          <div className="flex items-center justify-center gap-1">
             <span className="text-gray-300">
               <ForkIcon style={iconStyle} />
             </span>
             <b>{repo.forks_count}</b>
           </div>
-          <div className="text-gray-300 text-xs flex items-center justify-center">Forks</div>
+          <div className="flex items-center justify-center text-xs text-gray-300">Forks</div>
         </div>
         <div className="flex flex-col gap-1 grow">
-          <div className="flex gap-1 justify-center items-center">
+          <div className="flex items-center justify-center gap-1">
             <span className="text-gray-300">
               <WatchIcon style={iconStyle} />
             </span>
             <b>{repo.watchers_count}</b>
           </div>
-          <div className="text-gray-300 text-xs flex items-center justify-center">Watchers</div>
+          <div className="flex items-center justify-center text-xs text-gray-300">Watchers</div>
         </div>
       </div>
 
-      <div className="flex gap-1 flex-col text-sm mt-4">
+      <div className="flex flex-col gap-1 mt-4 text-sm">
         {items.map(({ Icon, key, inner }) =>
           inner ? (
             <div className="flex items-center gap-2 text-gray-300" key={key}>

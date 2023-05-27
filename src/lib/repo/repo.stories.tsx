@@ -13,6 +13,9 @@ const meta = {
     name: {
       control: { type: 'text', default: 'blog' },
     },
+    showLanguageDetails: {
+      control: { type: 'boolean', default: true },
+    },
   },
 } satisfies Meta<typeof GitHubRepo>;
 
@@ -24,5 +27,6 @@ export const Default: Story = {
   args: {
     username: 'kxxoling',
     name: 'blog',
+    showLanguageDetails: true,
   },
 };
