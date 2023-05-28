@@ -1,0 +1,1 @@
+{"version":3,"file":"Gist.d.ts","sourceRoot":"","sources":["../../../../src/lib/gist/Gist.tsx"],"names":[],"mappings":"AAAA,KAAK,eAAe,GAAG;IACrB,EAAE,EAAE,MAAM,CAAC;IACX,IAAI,CAAC,EAAE,MAAM,CAAC;IACd,WAAW,CAAC,EAAE,MAAM,CAAC;IACrB,KAAK,CAAC,EAAE,KAAK,CAAC,aAAa,CAAC;CAC7B,CAAC;AAIF,wBAAgB,UAAU,CAAC,EAAE,EAAE,EAAE,IAAI,EAAE,WAA0B,EAAE,EAAE,eAAe,eA8BnF"}

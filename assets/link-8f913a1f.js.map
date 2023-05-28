@@ -1,0 +1,1 @@
+{"version":3,"file":"link-8f913a1f.js","sources":["../../src/lib/user/link.svg"],"sourcesContent":["export default \"__VITE_ASSET__c4765a88__\""],"names":["SvgLink","props","React.createElement"],"mappings":"wCACK,MAACA,EAAWC,GAA0BC,EAAmB,cAAC,MAAO,CAAE,cAAe,OAAQ,OAAQ,GAAI,QAAS,YAAa,MAAO,GAAI,sBAAuB,OAAQ,UAAW,uBAAwB,GAAGD,GAAyBC,EAAAA,cAAoB,OAAQ,CAAE,EAAG,2gBAA2gB,CAAE,CAAC"}
